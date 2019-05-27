@@ -9,6 +9,7 @@ target_link_libraries( helloDemo )
 
 
 include_directories( "/usr/local/cuda-9.0/include" )
+include_directories( "/usr/include/aarch64-linux-gnu/" )
 add_executable( tensorrt_demo 
 	src_tensorrt_example/inference.cpp 
 	src_tensorrt_example/TFRTEngine.cpp
@@ -20,3 +21,19 @@ target_link_libraries( tensorrt_demo
 	/usr/local/cuda-9.0/targets/aarch64-linux/lib/libcudart.so
 	/usr/lib/aarch64-linux-gnu/libnvparsers.so
 )
+
+add_executable( tensorrt_mnist_uff
+	src_tensorrt_example/mnist_uff.cpp
+)
+target_link_libraries( tensorrt_mnist_uff 
+	/usr/lib/aarch64-linux-gnu/libnvinfer.so
+	/usr/lib/aarch64-linux-gnu/libnvparsers.so
+	/usr/lib/aarch64-linux-gnu/libnvinfer_plugin.so
+	/usr/lib/aarch64-linux-gnu/libcudnn.so
+	/usr/local/cuda-9.0/targets/aarch64-linux/lib/libcudart.so
+	/usr/local/cuda-9.0/targets/aarch64-linux/lib/libnvToolsExt.so
+#	/usr/local/cuda-9.0/targets/aarch64-linux/lib/libcublas.so
+#	/usr/lib/aarch64-linux-gnu/librt.so
+#	/usr/lib/aarch64-linux-gnu/libdl.so
+)
+
