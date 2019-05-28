@@ -130,6 +130,90 @@ void demo_exec( ICudaEngine& engine )
 	delete [] output;
 }
 
+
+void demo_exec_async( ICudaEngine& engine )
+{
+
+	float * input = new float[28*28*1]; 
+	
+	uint8_t * rawpgm = new uint8_t[28*28];
+    readPGMFile( "data/0.pgm", rawpgm, 28, 28);
+	for( int i=0; i<28*28; i++ ) 
+		input[i]=1.0 - float(rawpgm[i])/255.; 
+	float * output = new float[10]; 
+	
+
+	cout << "[demo_exec]Start\n"; 
+	// Execution context 
+    IExecutionContext* context = engine.createExecutionContext();
+    
+    // Bindings
+    int nbinds = engine.getNbBindings(); 
+    int inputIndex = engine.getBindingIndex( "Input_0" );
+    int outputIndex = engine.getBindingIndex( "Binary_3" );
+    cout << "nbinds = " << nbinds << endl;
+    cout << "engine.getBindingIndex( \"Input_0\" ) ---> "<< inputIndex << endl; //0
+    cout << "engine.getBindingIndex( \"Binary_3\" ) ---> "<< outputIndex << endl; //1
+    
+	// Create GPU buffers on device 
+    void * buffers[2];
+	CHECK( cudaMalloc( &buffers[inputIndex], 1*1*28*28*sizeof(float)) );
+	CHECK( cudaMalloc( &buffers[outputIndex], 10*sizeof(float)) );
+
+	
+	#if 0
+	// Host --> Device 
+	cout << "cudaMemcpyHostToDevice\n" ;
+	CHECK( cudaMemcpy( buffers[inputIndex], input, 1*28*28*sizeof(float), cudaMemcpyHostToDevice ) );
+	
+	// Execute 
+	cout << "execute\n";
+	            auto t_start = std::chrono::high_resolution_clock::now();
+    context->execute(1, &buffers[0]);
+                auto t_end = std::chrono::high_resolution_clock::now();
+                float ms = std::chrono::duration<float, std::milli>(t_end - t_start).count();
+    cout << "Execution done in " << ms << " ms\n"; 
+    
+    // Device --> Host
+	cout << "cudaMemcpyDeviceToHost\n";
+	CHECK( cudaMemcpy( output, buffers[outputIndex], 10*sizeof(float), cudaMemcpyDeviceToHost ) );
+	#endif 
+	// Note: 
+	// 	A better way is to use DMA with Async memory copy and cuda streams. See sampleMNISTAPI.cpp to know how to do it.	
+	
+	
+	// Create Stream 
+	cudaStream_t stream; 
+	CHECK( cudaStreamCreate(&stream) ); 
+	
+	
+	// DMA input batch data to device, do inference async, and DMA output back to host
+	cout << "cudaMemcpyHostToDevice\n" ;
+	CHECK( cudaMemcpyAsync( buffers[inputIndex], input, 1*28*28*sizeof(float), cudaMemcpyHostToDevice, stream ) );
+	
+	context->enqueue( 1, buffers, stream, nullptr ); 
+	
+	cout << "cudaMemcpyDeviceToHost\n";
+	CHECK( cudaMemcpyAsync( output, buffers[outputIndex], 10*sizeof(float), cudaMemcpyDeviceToHost, stream ) );
+	
+	cudaStreamSynchronize( stream) ;
+	 
+		
+	cout << "Output\n";
+	for( int i=0 ; i<10; i++ ) {
+		cout << i << ": " << output[i] << endl;
+	}
+
+	// Release 
+	cout << "Release\n";
+	cudaStreamDestroy( stream );
+	CHECK( cudaFree(buffers[inputIndex]));
+	CHECK( cudaFree(buffers[outputIndex]));
+	delete [] input; 
+	delete [] output;
+}
+
+
 int main()
 {
     auto fileName = string("data/lenet5.uff"); //locateFile("data/lenet5.uff");
@@ -147,7 +231,9 @@ int main()
     parser->destroy();
     
     //TODO : Execute
-    demo_exec( *engine );
+    //demo_exec( *engine );
+    demo_exec_async( *engine );
+    
     cout << "Execution finished\n"; 
     
     engine->destroy();
