@@ -76,7 +76,7 @@ void demo_exec( ICudaEngine& engine )
 	uint8_t * rawpgm = new uint8_t[28*28];
     readPGMFile( "data/0.pgm", rawpgm, 28, 28);
 	for( int i=0; i<28*28; i++ ) 
-		input[i]=(1.0 - float(rawpgm[i]))/255.; 
+		input[i]=1.0 - float(rawpgm[i])/255.; 
 	float * output = new float[10]; 
 	
 
