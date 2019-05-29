@@ -8,8 +8,9 @@
 - bare_mnist.cpp : My simple adaptation. 
 
 ## Compile
+For tensorrt5 (jetpack4.2): 
 ```
-g++ -std=c++11 bare_mnist.cpp common.cpp -I /usr/local/cuda/include -L /usr/local/cuda/lib64 -lcudart -lnvinfer -lnvparsers
+g++ -std=c++11 image_desc_try.cpp  common.cpp -I /usr/local/cuda/include -L /usr/local/cuda/lib64 -L /usr/lib/aarch64-linux-gnu/libnvparsers.so  -lcudart -lnvinfer -lnvparsers
 ```
 
 ## Run 

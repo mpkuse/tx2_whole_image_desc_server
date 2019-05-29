@@ -16,7 +16,7 @@ using namespace nvinfer1;
 
 using namespace nvuffparser;
 using namespace nvinfer1;
-
+using namespace std;
 static Logger gLogger;
 
 
@@ -222,7 +222,7 @@ int main()
     int maxBatchSize = 1;
     auto parser = createUffParser();
     
-    parser->registerInput("Input_0", DimsCHW(1, 28, 28));
+    parser->registerInput("Input_0", DimsCHW(1, 28, 28), UffInputOrder::kNCHW);
     parser->registerOutput("Binary_3");
     
     ICudaEngine* engine = loadModelAndCreateEngine(fileName.c_str(), maxBatchSize, parser);
