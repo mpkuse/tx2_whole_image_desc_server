@@ -1,0 +1,6656 @@
+version: 1
+descriptor_core_version: 1
+descriptors {
+  id: "tensorflow_extension"
+  version: 1
+}
+descriptors {
+  id: "custom"
+  version: 1
+}
+graphs {
+  id: "main"
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize_1"
+    inputs: "net_vlad_layer_1/Reshape"
+    inputs: "net_vlad_layer_1/l2_normalize_1/Rsqrt"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "mul"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize_1/Rsqrt"
+    inputs: "net_vlad_layer_1/l2_normalize_1/Maximum"
+    operation: "Unary"
+    fields {
+      key: "func"
+      value {
+        s: "rsqrt"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize_1/Maximum"
+    inputs: "net_vlad_layer_1/l2_normalize_1/Sum"
+    inputs: "net_vlad_layer_1/l2_normalize_1/Maximum/y"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "max"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize_1/Maximum/y"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/l2_normalize_1/Maximum/y"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize_1/Sum"
+    inputs: "net_vlad_layer_1/l2_normalize_1/Square"
+    operation: "Reduce"
+    fields {
+      key: "axes"
+      value {
+        i_list {
+          val: -1
+        }
+      }
+    }
+    fields {
+      key: "func"
+      value {
+        s: "sum"
+      }
+    }
+    fields {
+      key: "keepdims"
+      value {
+        b: true
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize_1/Square"
+    inputs: "net_vlad_layer_1/Reshape"
+    operation: "Unary"
+    fields {
+      key: "func"
+      value {
+        s: "square"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/Reshape"
+    inputs: "net_vlad_layer_1/l2_normalize"
+    inputs: "net_vlad_layer_1/stack"
+    operation: "Reshape"
+  }
+  nodes {
+    id: "net_vlad_layer_1/stack"
+    inputs: "net_vlad_layer_1/stack/0"
+    inputs: "net_vlad_layer_1/Prod"
+    operation: "Stack"
+    fields {
+      key: "axis"
+      value {
+        i: 0
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/Prod"
+    inputs: "net_vlad_layer_1/strided_slice"
+    operation: "Reduce"
+    fields {
+      key: "axes"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "func"
+      value {
+        s: "prod"
+      }
+    }
+    fields {
+      key: "keepdims"
+      value {
+        b: false
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/strided_slice"
+    inputs: "net_vlad_layer_1/Shape"
+    inputs: "net_vlad_layer_1/strided_slice/stack"
+    inputs: "net_vlad_layer_1/strided_slice/stack_1"
+    inputs: "net_vlad_layer_1/strided_slice/stack_2"
+    operation: "StridedSlice"
+    fields {
+      key: "begin_mask"
+      value {
+        i: 0
+      }
+    }
+    fields {
+      key: "end_mask"
+      value {
+        i: 1
+      }
+    }
+    fields {
+      key: "shrink_axis_mask"
+      value {
+        i: 0
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/strided_slice/stack_2"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/strided_slice/stack_2"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/strided_slice/stack_1"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/strided_slice/stack_1"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/strided_slice/stack"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/strided_slice/stack"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/Shape"
+    inputs: "net_vlad_layer_1/l2_normalize"
+    operation: "Shape"
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize"
+    inputs: "net_vlad_layer_1/transpose"
+    inputs: "net_vlad_layer_1/l2_normalize/Rsqrt"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "mul"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize/Rsqrt"
+    inputs: "net_vlad_layer_1/l2_normalize/Maximum"
+    operation: "Unary"
+    fields {
+      key: "func"
+      value {
+        s: "rsqrt"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize/Maximum"
+    inputs: "net_vlad_layer_1/l2_normalize/Sum"
+    inputs: "net_vlad_layer_1/l2_normalize/Maximum/y"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "max"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize/Maximum/y"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/l2_normalize/Maximum/y"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize/Sum"
+    inputs: "net_vlad_layer_1/l2_normalize/Square"
+    operation: "Reduce"
+    fields {
+      key: "axes"
+      value {
+        i_list {
+          val: -1
+        }
+      }
+    }
+    fields {
+      key: "func"
+      value {
+        s: "sum"
+      }
+    }
+    fields {
+      key: "keepdims"
+      value {
+        b: true
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/l2_normalize/Square"
+    inputs: "net_vlad_layer_1/transpose"
+    operation: "Unary"
+    fields {
+      key: "func"
+      value {
+        s: "square"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/transpose"
+    inputs: "net_vlad_layer_1/Sum"
+    operation: "Transpose"
+    fields {
+      key: "permutation"
+      value {
+        i_list {
+          val: 0
+          val: 2
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/Sum"
+    inputs: "net_vlad_layer_1/mul"
+    operation: "Reduce"
+    fields {
+      key: "axes"
+      value {
+        i_list {
+          val: 1
+          val: 2
+        }
+      }
+    }
+    fields {
+      key: "func"
+      value {
+        s: "sum"
+      }
+    }
+    fields {
+      key: "keepdims"
+      value {
+        b: false
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/mul"
+    inputs: "net_vlad_layer_1/ExpandDims"
+    inputs: "net_vlad_layer_1/add_1"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "mul"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/add_1"
+    inputs: "net_vlad_layer_1/ExpandDims_1"
+    inputs: "net_vlad_layer_1/cluster_centers"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "add"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/cluster_centers"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 1
+          val: 512
+          val: 16
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/cluster_centers"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/ExpandDims_1"
+    inputs: "conv_pw_6_relu/Relu6"
+    operation: "ExpandDims"
+    fields {
+      key: "axis"
+      value {
+        i: -1
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_relu/Relu6"
+    inputs: "conv_pw_6_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/Merge"
+    inputs: "conv_pw_6_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_6_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/Switch_1"
+    inputs: "conv_pw_6_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_6_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/keras_learning_phase"
+    inputs: "conv1_bn/keras_learning_phase/input"
+    operation: "_PlaceholderWithDefault"
+    fields {
+      key: "dtype"
+      value {
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/keras_learning_phase/input"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: 7
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/keras_learning_phase/input"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/FusedBatchNorm"
+    inputs: "conv_pw_6/convolution"
+    inputs: "conv_pw_6_bn/gamma"
+    inputs: "conv_pw_6_bn/beta"
+    inputs: "conv_pw_6_bn/Const_4"
+    inputs: "conv_pw_6_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 512
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 512
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6/convolution"
+    inputs: "conv_dw_6_relu/Relu6"
+    inputs: "conv_pw_6/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 256
+          val: 512
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_relu/Relu6"
+    inputs: "conv_dw_6_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/Merge"
+    inputs: "conv_dw_6_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_6_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/Switch_1"
+    inputs: "conv_dw_6_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_6_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/FusedBatchNorm"
+    inputs: "conv_dw_6/depthwise"
+    inputs: "conv_dw_6_bn/gamma"
+    inputs: "conv_dw_6_bn/beta"
+    inputs: "conv_dw_6_bn/Const_4"
+    inputs: "conv_dw_6_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6/depthwise"
+    inputs: "conv_pad_6/Pad"
+    inputs: "conv_dw_6/depthwise_kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "number_groups"
+      value {
+        i: 256
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 2
+          val: 2
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6/depthwise_kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 256
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6/depthwise_kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pad_6/Pad"
+    inputs: "conv_pw_5_relu/Relu6"
+    inputs: "conv_pad_6/Pad/paddings"
+    operation: "Pad"
+  }
+  nodes {
+    id: "conv_pad_6/Pad/paddings"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 4
+          val: 2
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pad_6/Pad/paddings"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_relu/Relu6"
+    inputs: "conv_pw_5_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/Merge"
+    inputs: "conv_pw_5_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_5_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/Switch_1"
+    inputs: "conv_pw_5_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_5_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/FusedBatchNorm"
+    inputs: "conv_pw_5/convolution"
+    inputs: "conv_pw_5_bn/gamma"
+    inputs: "conv_pw_5_bn/beta"
+    inputs: "conv_pw_5_bn/Const_4"
+    inputs: "conv_pw_5_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5/convolution"
+    inputs: "conv_dw_5_relu/Relu6"
+    inputs: "conv_pw_5/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 256
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_relu/Relu6"
+    inputs: "conv_dw_5_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/Merge"
+    inputs: "conv_dw_5_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_5_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/Switch_1"
+    inputs: "conv_dw_5_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_5_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/FusedBatchNorm"
+    inputs: "conv_dw_5/depthwise"
+    inputs: "conv_dw_5_bn/gamma"
+    inputs: "conv_dw_5_bn/beta"
+    inputs: "conv_dw_5_bn/Const_4"
+    inputs: "conv_dw_5_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5/depthwise"
+    inputs: "conv_pw_4_relu/Relu6"
+    inputs: "conv_dw_5/depthwise_kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "number_groups"
+      value {
+        i: 256
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5/depthwise_kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 256
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5/depthwise_kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_relu/Relu6"
+    inputs: "conv_pw_4_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/Merge"
+    inputs: "conv_pw_4_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_4_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/Switch_1"
+    inputs: "conv_pw_4_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_4_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/FusedBatchNorm"
+    inputs: "conv_pw_4/convolution"
+    inputs: "conv_pw_4_bn/gamma"
+    inputs: "conv_pw_4_bn/beta"
+    inputs: "conv_pw_4_bn/Const_4"
+    inputs: "conv_pw_4_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4/convolution"
+    inputs: "conv_dw_4_relu/Relu6"
+    inputs: "conv_pw_4/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 128
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_relu/Relu6"
+    inputs: "conv_dw_4_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/Merge"
+    inputs: "conv_dw_4_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_4_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/Switch_1"
+    inputs: "conv_dw_4_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_4_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/FusedBatchNorm"
+    inputs: "conv_dw_4/depthwise"
+    inputs: "conv_dw_4_bn/gamma"
+    inputs: "conv_dw_4_bn/beta"
+    inputs: "conv_dw_4_bn/Const_4"
+    inputs: "conv_dw_4_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4/depthwise"
+    inputs: "conv_pad_4/Pad"
+    inputs: "conv_dw_4/depthwise_kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "number_groups"
+      value {
+        i: 128
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 2
+          val: 2
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4/depthwise_kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 128
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4/depthwise_kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pad_4/Pad"
+    inputs: "conv_pw_3_relu/Relu6"
+    inputs: "conv_pad_4/Pad/paddings"
+    operation: "Pad"
+  }
+  nodes {
+    id: "conv_pad_4/Pad/paddings"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 4
+          val: 2
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pad_4/Pad/paddings"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_relu/Relu6"
+    inputs: "conv_pw_3_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/Merge"
+    inputs: "conv_pw_3_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_3_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/Switch_1"
+    inputs: "conv_pw_3_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_3_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/FusedBatchNorm"
+    inputs: "conv_pw_3/convolution"
+    inputs: "conv_pw_3_bn/gamma"
+    inputs: "conv_pw_3_bn/beta"
+    inputs: "conv_pw_3_bn/Const_4"
+    inputs: "conv_pw_3_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3/convolution"
+    inputs: "conv_dw_3_relu/Relu6"
+    inputs: "conv_pw_3/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 128
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_relu/Relu6"
+    inputs: "conv_dw_3_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/Merge"
+    inputs: "conv_dw_3_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_3_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/Switch_1"
+    inputs: "conv_dw_3_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_3_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/FusedBatchNorm"
+    inputs: "conv_dw_3/depthwise"
+    inputs: "conv_dw_3_bn/gamma"
+    inputs: "conv_dw_3_bn/beta"
+    inputs: "conv_dw_3_bn/Const_4"
+    inputs: "conv_dw_3_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3/depthwise"
+    inputs: "conv_pw_2_relu/Relu6"
+    inputs: "conv_dw_3/depthwise_kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "number_groups"
+      value {
+        i: 128
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3/depthwise_kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 128
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3/depthwise_kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_relu/Relu6"
+    inputs: "conv_pw_2_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/Merge"
+    inputs: "conv_pw_2_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_2_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/Switch_1"
+    inputs: "conv_pw_2_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_2_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/FusedBatchNorm"
+    inputs: "conv_pw_2/convolution"
+    inputs: "conv_pw_2_bn/gamma"
+    inputs: "conv_pw_2_bn/beta"
+    inputs: "conv_pw_2_bn/Const_4"
+    inputs: "conv_pw_2_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2/convolution"
+    inputs: "conv_dw_2_relu/Relu6"
+    inputs: "conv_pw_2/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 64
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_relu/Relu6"
+    inputs: "conv_dw_2_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/Merge"
+    inputs: "conv_dw_2_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_2_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/Switch_1"
+    inputs: "conv_dw_2_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_2_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/FusedBatchNorm"
+    inputs: "conv_dw_2/depthwise"
+    inputs: "conv_dw_2_bn/gamma"
+    inputs: "conv_dw_2_bn/beta"
+    inputs: "conv_dw_2_bn/Const_4"
+    inputs: "conv_dw_2_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2/depthwise"
+    inputs: "conv_pad_2/Pad"
+    inputs: "conv_dw_2/depthwise_kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "number_groups"
+      value {
+        i: 64
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 2
+          val: 2
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2/depthwise_kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 64
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2/depthwise_kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pad_2/Pad"
+    inputs: "conv_pw_1_relu/Relu6"
+    inputs: "conv_pad_2/Pad/paddings"
+    operation: "Pad"
+  }
+  nodes {
+    id: "conv_pad_2/Pad/paddings"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 4
+          val: 2
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pad_2/Pad/paddings"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_relu/Relu6"
+    inputs: "conv_pw_1_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/Merge"
+    inputs: "conv_pw_1_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_1_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/Switch_1"
+    inputs: "conv_pw_1_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_1_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/FusedBatchNorm"
+    inputs: "conv_pw_1/convolution"
+    inputs: "conv_pw_1_bn/gamma"
+    inputs: "conv_pw_1_bn/beta"
+    inputs: "conv_pw_1_bn/Const_4"
+    inputs: "conv_pw_1_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1/convolution"
+    inputs: "conv_dw_1_relu/Relu6"
+    inputs: "conv_pw_1/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 32
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_relu/Relu6"
+    inputs: "conv_dw_1_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/Merge"
+    inputs: "conv_dw_1_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_1_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/Switch_1"
+    inputs: "conv_dw_1_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_1_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/FusedBatchNorm"
+    inputs: "conv_dw_1/depthwise"
+    inputs: "conv_dw_1_bn/gamma"
+    inputs: "conv_dw_1_bn/beta"
+    inputs: "conv_dw_1_bn/Const_4"
+    inputs: "conv_dw_1_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1/depthwise"
+    inputs: "conv1_relu/Relu6"
+    inputs: "conv_dw_1/depthwise_kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "number_groups"
+      value {
+        i: 32
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1/depthwise_kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 32
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1/depthwise_kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_relu/Relu6"
+    inputs: "conv1_bn/cond/Merge"
+    operation: "Activation"
+    fields {
+      key: "func"
+      value {
+        s: "relu6"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/Merge"
+    inputs: "conv1_bn/cond/FusedBatchNorm"
+    inputs: "conv1_bn/cond/Switch_1"
+    operation: "_Merge"
+    fields {
+      key: "N"
+      value {
+        i: 2
+      }
+    }
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/Switch_1"
+    inputs: "conv1_bn/FusedBatchNorm"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv1_bn/FusedBatchNorm"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/FusedBatchNorm"
+    inputs: "conv1/convolution"
+    inputs: "conv1_bn/gamma"
+    inputs: "conv1_bn/beta"
+    inputs: "conv1_bn/Const_4"
+    inputs: "conv1_bn/Const_5"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/Const_5"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/Const_5"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/Const_4"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 0
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/Const_4"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/beta"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/beta"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/gamma"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/gamma"
+      }
+    }
+  }
+  nodes {
+    id: "conv1/convolution"
+    inputs: "conv1_pad/Pad"
+    inputs: "conv1/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 2
+          val: 2
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 3
+          val: 3
+          val: 3
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_pad/Pad"
+    inputs: "input_1"
+    inputs: "conv1_pad/Pad/paddings"
+    operation: "Pad"
+  }
+  nodes {
+    id: "conv1_pad/Pad/paddings"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 4
+          val: 2
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_pad/Pad/paddings"
+      }
+    }
+  }
+  nodes {
+    id: "input_1"
+    operation: "Input"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: -1
+          val: 240
+          val: 320
+          val: 3
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/FusedBatchNorm"
+    inputs: "conv1_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv1_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv1_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv1_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv1_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv1_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv1_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv1_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv1_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv1_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv1_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv1_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv1_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv1_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv1_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv1/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv1/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_1_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_dw_1_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_1_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_1_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_1_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 32
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_1_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_1_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_1_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_1_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_1_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_1_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_1/depthwise"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_1/depthwise"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_1_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_pw_1_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_1_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_1_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_1_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_1_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_1_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_1_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_1_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_1_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_1_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_1/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_1/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_2_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_dw_2_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_2_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_2_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_2_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 64
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_2_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_2_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_2_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_2_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_2_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_2_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_2/depthwise"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_2/depthwise"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_2_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_pw_2_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_2_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_2_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_2_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_2_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_2_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_2_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_2_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_2_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_2_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_2/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_2/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_3_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_dw_3_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_3_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_3_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_3_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_3_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_3_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_3_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_3_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_3_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_3_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_3/depthwise"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_3/depthwise"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_3_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_pw_3_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_3_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_3_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_3_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_3_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_3_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_3_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_3_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_3_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_3_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_3/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_3/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_4_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_dw_4_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_4_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_4_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_4_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 128
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_4_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_4_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_4_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_4_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_4_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_4_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_4/depthwise"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_4/depthwise"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_4_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_pw_4_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_4_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_4_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_4_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_4_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_4_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_4_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_4_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_4_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_4_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_4/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_4/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_5_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_dw_5_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_5_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_5_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_5_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_5_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_5_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_5_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_5_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_5_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_5_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_5/depthwise"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_5/depthwise"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_5_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_pw_5_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_5_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_5_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_5_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_5_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_5_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_5_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_5_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_5_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_5_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_5/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_5/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/FusedBatchNorm"
+    inputs: "conv_dw_6_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_dw_6_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_6_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_dw_6_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_6_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 256
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_dw_6_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_dw_6_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_6_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_dw_6_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_6_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_dw_6_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_dw_6/depthwise"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_dw_6/depthwise"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/FusedBatchNorm"
+    inputs: "conv_pw_6_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_4"
+    operation: "BatchNorm"
+    fields {
+      key: "epsilon"
+      value {
+        d: 0.0010000000475
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_4"
+    inputs: "conv_pw_6_bn/moving_variance"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_6_bn/moving_variance"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/moving_variance"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 512
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6_bn/moving_variance"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_3"
+    inputs: "conv_pw_6_bn/moving_mean"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_6_bn/moving_mean"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/moving_mean"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 512
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_conv_pw_6_bn/moving_mean"
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_2"
+    inputs: "conv_pw_6_bn/beta"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_6_bn/beta"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/FusedBatchNorm/Switch_1"
+    inputs: "conv_pw_6_bn/gamma"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_6_bn/gamma"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "conv_pw_6_bn/cond/FusedBatchNorm/Switch"
+    inputs: "conv_pw_6/convolution"
+    inputs: "conv1_bn/keras_learning_phase"
+    operation: "_Switch"
+    fields {
+      key: "T"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "_class"
+      value {
+        s_list {
+          val: "loc:@conv_pw_6/convolution"
+        }
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/ExpandDims"
+    inputs: "net_vlad_layer_1/Softmax"
+    operation: "ExpandDims"
+    fields {
+      key: "axis"
+      value {
+        i: -2
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/Softmax"
+    inputs: "net_vlad_layer_1/add"
+    operation: "Softmax"
+    fields {
+      key: "axis"
+      value {
+        i: 0
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/add"
+    inputs: "net_vlad_layer_1/convolution"
+    inputs: "net_vlad_layer_1/bias"
+    operation: "Binary"
+    fields {
+      key: "func"
+      value {
+        s: "add"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/bias"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 16
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/bias"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/convolution"
+    inputs: "conv_pw_6_relu/Relu6"
+    inputs: "net_vlad_layer_1/kernel"
+    operation: "Conv"
+    fields {
+      key: "dilation"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+    fields {
+      key: "implicit_padding"
+      value {
+        s: "same"
+      }
+    }
+    fields {
+      key: "inputs_orders"
+      value {
+        ref: "orders_N+C_+CK"
+      }
+    }
+    fields {
+      key: "strides"
+      value {
+        i_list {
+          val: 1
+          val: 1
+        }
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/kernel"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_FLOAT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+          val: 1
+          val: 1
+          val: 512
+          val: 16
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/kernel"
+      }
+    }
+  }
+  nodes {
+    id: "net_vlad_layer_1/stack/0"
+    operation: "Const"
+    fields {
+      key: "dtype"
+      value {
+        dtype: DT_INT32
+      }
+    }
+    fields {
+      key: "shape"
+      value {
+        i_list {
+        }
+      }
+    }
+    fields {
+      key: "values"
+      value {
+        ref: "weights_net_vlad_layer_1/stack/0"
+      }
+    }
+  }
+  nodes {
+    id: "MarkOutput_0"
+    inputs: "net_vlad_layer_1/l2_normalize_1"
+    operation: "MarkOutput"
+  }
+}
+referenced_data {
+  key: "orders_N+C"
+  value {
+    dim_orders_list {
+      val {
+        orders {
+          key: -1
+          value {
+            val: 0
+            val: 2
+            val: 2147483647
+            val: 1
+          }
+        }
+      }
+    }
+  }
+}
+referenced_data {
+  key: "orders_N+C_+CK"
+  value {
+    dim_orders_list {
+      val {
+        orders {
+          key: -1
+          value {
+            val: 0
+            val: 2
+            val: 2147483647
+            val: 1
+          }
+        }
+      }
+      val {
+        orders {
+          key: -1
+          value {
+            val: 2
+            val: 2147483647
+            val: 1
+            val: 0
+          }
+        }
+      }
+    }
+  }
+}
+referenced_data {
+  key: "weights_conv1/kernel"
+  value {
+    blob: "(...3456 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/beta"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/gamma"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/keras_learning_phase/input"
+  value {
+    blob: "\000"
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/moving_mean"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv1_bn/moving_variance"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv1_pad/Pad/paddings"
+  value {
+    blob: "\000\000\000\000\000\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\000\000\000\000"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1/depthwise_kernel"
+  value {
+    blob: "(...1152 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1_bn/beta"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1_bn/gamma"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1_bn/moving_mean"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_1_bn/moving_variance"
+  value {
+    blob: "(...128 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2/depthwise_kernel"
+  value {
+    blob: "(...2304 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2_bn/beta"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2_bn/gamma"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2_bn/moving_mean"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_2_bn/moving_variance"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3/depthwise_kernel"
+  value {
+    blob: "(...4608 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3_bn/beta"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3_bn/gamma"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3_bn/moving_mean"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_3_bn/moving_variance"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4/depthwise_kernel"
+  value {
+    blob: "(...4608 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4_bn/beta"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4_bn/gamma"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4_bn/moving_mean"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_4_bn/moving_variance"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5/depthwise_kernel"
+  value {
+    blob: "(...9216 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5_bn/beta"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5_bn/gamma"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5_bn/moving_mean"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_5_bn/moving_variance"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6/depthwise_kernel"
+  value {
+    blob: "(...9216 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6_bn/beta"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6_bn/gamma"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6_bn/moving_mean"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_dw_6_bn/moving_variance"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pad_2/Pad/paddings"
+  value {
+    blob: "\000\000\000\000\000\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\000\000\000\000"
+  }
+}
+referenced_data {
+  key: "weights_conv_pad_4/Pad/paddings"
+  value {
+    blob: "\000\000\000\000\000\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\000\000\000\000"
+  }
+}
+referenced_data {
+  key: "weights_conv_pad_6/Pad/paddings"
+  value {
+    blob: "\000\000\000\000\000\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\001\000\000\000\000\000\000\000\000\000\000\000"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1/kernel"
+  value {
+    blob: "(...8192 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1_bn/beta"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1_bn/gamma"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1_bn/moving_mean"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_1_bn/moving_variance"
+  value {
+    blob: "(...256 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2/kernel"
+  value {
+    blob: "(...32768 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2_bn/beta"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2_bn/gamma"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2_bn/moving_mean"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_2_bn/moving_variance"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3/kernel"
+  value {
+    blob: "(...65536 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3_bn/beta"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3_bn/gamma"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3_bn/moving_mean"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_3_bn/moving_variance"
+  value {
+    blob: "(...512 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4/kernel"
+  value {
+    blob: "(...131072 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4_bn/beta"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4_bn/gamma"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4_bn/moving_mean"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_4_bn/moving_variance"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5/kernel"
+  value {
+    blob: "(...262144 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5_bn/beta"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5_bn/gamma"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5_bn/moving_mean"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_5_bn/moving_variance"
+  value {
+    blob: "(...1024 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6/kernel"
+  value {
+    blob: "(...524288 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6_bn/Const_4"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6_bn/Const_5"
+  value {
+    blob: ""
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6_bn/beta"
+  value {
+    blob: "(...2048 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6_bn/gamma"
+  value {
+    blob: "(...2048 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6_bn/moving_mean"
+  value {
+    blob: "(...2048 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_conv_pw_6_bn/moving_variance"
+  value {
+    blob: "(...2048 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/bias"
+  value {
+    blob: "(...64 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/cluster_centers"
+  value {
+    blob: "(...32768 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/kernel"
+  value {
+    blob: "(...32768 bytes skipped...)"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/l2_normalize/Maximum/y"
+  value {
+    blob: "\314\274\214+"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/l2_normalize_1/Maximum/y"
+  value {
+    blob: "\314\274\214+"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/stack/0"
+  value {
+    blob: "\377\377\377\377"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/strided_slice/stack"
+  value {
+    blob: "\001\000\000\000"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/strided_slice/stack_1"
+  value {
+    blob: "\000\000\000\000"
+  }
+}
+referenced_data {
+  key: "weights_net_vlad_layer_1/strided_slice/stack_2"
+  value {
+    blob: "\001\000\000\000"
+  }
+}

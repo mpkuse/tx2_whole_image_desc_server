@@ -32,7 +32,7 @@ static Logger gLogger;
 
 
 
-#define __loadModel_cout(msg) msg; 
+#define __loadModel_cout(msg) msg;
 ICudaEngine* loadModelAndCreateEngine(const char* uffFile, int maxBatchSize,
                                       IUffParser* parser)
 {
@@ -71,26 +71,26 @@ ICudaEngine* loadModelAndCreateEngine(const char* uffFile, int maxBatchSize,
 
 int main()
 {
-    auto fileName = string("uff_ready/output_model.uff"); //locateFile("data/lenet5.uff");
+    auto fileName = string("uff_ready/output_nvinfer.uff"); //locateFile("data/lenet5.uff");
     std::cout << fileName << std::endl;
 
     int maxBatchSize = 1;
     auto parser = createUffParser();
-    
-    parser->registerInput("input_1", DimsCHW(3, 480, 752),  UffInputOrder::kNCHW);
-    parser->registerOutput("resulting0");
-    
+
+    parser->registerInput("input_1", DimsCHW(3, 240, 320),  UffInputOrder::kNCHW);
+    parser->registerOutput("net_vlad_layer_1/l2_normalize_1");
+
     ICudaEngine* engine = loadModelAndCreateEngine(fileName.c_str(), maxBatchSize, parser);
     if (!engine)
         RETURN_AND_LOG(EXIT_FAILURE, ERROR, "Model load failed");
     parser->destroy();
-    
+
     //TODO : Execute
     //demo_exec( *engine );
     //demo_exec_async( *engine );
-    
-    cout << "Execution finished\n"; 
-    
+
+    cout << "Execution finished\n";
+
     engine->destroy();
     shutdownProtobufLibrary();
     return EXIT_SUCCESS;
