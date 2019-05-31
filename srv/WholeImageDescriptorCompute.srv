@@ -1,0 +1,5 @@
+sensor_msgs/Image ima
+int64 a
+---
+float64[] desc
+string model_type
