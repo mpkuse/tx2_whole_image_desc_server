@@ -1,3 +1,9 @@
 *.bak
 a.out
 build*
+*renet50.uff
+*resnet50.uff
+*.engine
+*resnet50*.uff
+*vgg16*.uff
+*mobilenet*.uff

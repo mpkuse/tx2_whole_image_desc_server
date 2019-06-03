@@ -32,3 +32,15 @@ void readPGMFile(const std::string& fileName,  uint8_t *buffer, int inH, int inW
 	infile.seekg(1, infile.cur);
 	infile.read(reinterpret_cast<char*>(buffer), inH*inW);
 }
+
+void readPGMFileP6(const std::string& fileName,  uint8_t *buffer, int inH, int inW)
+{
+	std::cout << "[readPGMFileP6] Read file" << fileName << std::endl;
+	std::ifstream infile(fileName, std::ifstream::binary);
+    assert(infile.is_open() && "Attempting to read from a file that is not open.");
+	std::string magic, h, w, max;
+	infile >> magic >> h >> w >> max;
+  std::cout << "[readPGMFileP6]magic=" << magic << " h=" << h << " w=" << w << " max=" << max << std::endl;
+	infile.seekg(1, infile.cur);
+	infile.read(reinterpret_cast<char*>(buffer), inH*inW*3);
+}

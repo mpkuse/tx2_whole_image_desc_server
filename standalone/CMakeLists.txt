@@ -14,3 +14,17 @@ target_link_libraries( image_desc_try
    /usr/lib/aarch64-linux-gnu/libnvparsers.so
    /usr/local/cuda-10.0/targets/aarch64-linux/lib/libcudart.so
 )
+
+
+
+add_executable( imagenet
+    common.cpp
+    imagenet.cpp
+)
+
+target_link_libraries( imagenet
+   ${catkin_LIBRARIES}
+   /usr/lib/aarch64-linux-gnu/libnvinfer.so
+   /usr/lib/aarch64-linux-gnu/libnvparsers.so
+   /usr/local/cuda-10.0/targets/aarch64-linux/lib/libcudart.so
+)
