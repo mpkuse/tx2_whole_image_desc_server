@@ -7,3 +7,4 @@ build*
 *resnet50*.uff
 *vgg16*.uff
 *mobilenet*.uff
+*.pyc
