@@ -160,8 +160,8 @@ include_directories(
 
 include_directories( "/usr/local/cuda/include" )
 add_executable( desc_server
-    tx2_src/common.cpp
-    tx2_src/desc_server.cpp
+    tx2_tensorrt_src/common.cpp
+    tx2_tensorrt_src/desc_server.cpp
 )
 add_dependencies( desc_server tx2_whole_image_desc_server_generate_messages_cpp )
 
