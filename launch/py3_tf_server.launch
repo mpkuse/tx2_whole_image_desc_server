@@ -4,7 +4,7 @@
   <!-- KERAS SERVER -->
           <!-- $(ubuntu) rosrun cerebro whole_image_desc_compute_server.py _config_file:=/app/catk_ws/src/cerebro/config/vinsfusion/euroc/euroc_stereo_imu_config.yaml -->
     <node name="my_desc_server" pkg="tx2_whole_image_desc_server" type="py3_whole_image_desc_server.py" output="screen">
-        <param name="kerasmodel_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x3__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.800.h5" />
+        <param name="kerasmodel_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x3__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.800.480x752x3.h5" />
 
 
        <!-- <param name="config_file" type="string" value="$(arg config_path)" /> -->

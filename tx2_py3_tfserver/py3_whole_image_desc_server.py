@@ -6,9 +6,11 @@ tcol = bcolors()
 
 import tensorflow as tf
 from tensorflow.keras import backend as K
+import numpy as np
 
 import os
 
+from tx2_whole_image_desc_server.srv import WholeImageDescriptorCompute, WholeImageDescriptorComputeResponse
 
 # This was copied from the training code's CustomNets.py
 class NetVLADLayer( tf.keras.layers.Layer ):
@@ -83,13 +85,12 @@ class NetVLADLayer( tf.keras.layers.Layer ):
 
 
 
-
 class HDF5ModelImageDescriptor:
     """
     This class loads the net structure from the .h5 file. This file contains
     the model weights as well as architecture details.
     In the argument `kerasmodel_file`
-    you need to specify the core_model.??.keras full path (keras model file).
+    you need to specify the full path (keras model file).
     """
     def __init__(self, kerasmodel_file, im_rows=600, im_cols=960, im_chnls=3):
         ## Build net
@@ -100,6 +101,7 @@ class HDF5ModelImageDescriptor:
         # config.gpu_options.visible_device_list = "0"
         # tf.keras.backend.tensorflow_backend.set_session(tf.Session(config=config))
         #TODO set learning phase(0)
+        tf.keras.backend.set_learning_phase(0)
 
         # Blackbox 4
         # self.im_rows = 512
@@ -145,14 +147,7 @@ class HDF5ModelImageDescriptor:
             keras.utils.plot_model( model, to_file=model_visual_fname, show_shapes=True )
 
 
-
-        # Replace Input Layer
-        new_model = change_model_inputshape( model, new_input_shape=(1,self.im_rows,self.im_cols,self.im_chnls) )
-        new_input_shape = new_model._layers[0].input_shape
-        print( 'OLD MODEL: ', 'input_shape=', str(old_input_shape) )
-        print( 'NEW MODEL: input_shape=', str(new_input_shape) )
-
-        self.model = new_model
+        self.model = model
         self.model_type = model_type
 
 
@@ -165,7 +160,7 @@ class HDF5ModelImageDescriptor:
         print( '-----' )
         print( '\tinput_image.shape=', tmp_zer.shape )
         print( '\toutput.shape=', tmp_zer_out.shape )
-        print( '\tminmax=', np.min( tmp_zer_out ), np.max( tmp_zer_out ) )
+        print( '\tminmax(tmp_zer_out)=', np.min( tmp_zer_out ), np.max( tmp_zer_out ) )
         print( '\tnorm=', np.linalg.norm( tmp_zer_out ) )
         print( '\tdtype=', tmp_zer_out.dtype )
         print( '-----' )
@@ -173,6 +168,10 @@ class HDF5ModelImageDescriptor:
 
     def handle_req( self, req ):
         print ('handle_req')
+        result = WholeImageDescriptorComputeResponse()
+        result.desc = [ 2122., 46.2 ]
+        result.model_type = self.model_type
+        return result
 
     #
     # def handle_req( self, req ):
@@ -312,5 +311,9 @@ if __name__ == '__main__':
     gpu_netvlad = HDF5ModelImageDescriptor( kerasmodel_file=kerasmodel_file, im_rows=fs_image_height, im_cols=fs_image_width, im_chnls=fs_image_chnls )
 
     s = rospy.Service( 'whole_image_descriptor_compute', WholeImageDescriptorCompute, gpu_netvlad.handle_req  )
-    print( 'whole_image_descriptor_compute_server is running' )
+    print (tcol.OKGREEN )
+    print( '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print( '+++  whole_image_descriptor_compute_server is running +++' )
+    print( '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print( tcol.ENDC )
     rospy.spin()

@@ -1,6 +1,8 @@
 import tensorflow as tf
 from tensorflow.keras import backend as K
 
+# See:
+#   - https://github.com/tensorflow/tensorflow/issues/29434
 
 
 
