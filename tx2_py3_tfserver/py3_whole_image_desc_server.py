@@ -47,12 +47,13 @@ def imgmsg_to_cv2( msg ):
     data: [111, 135, 230, 82, 76, 191, 91, 91, 208, 110, 105, 182, 83, 73, 183, 95, 110, 213, 54, 14, 85, 106, 137, 229, 72, 64, 177, 103, 106, 198, 142, 148, 220, 131, 136, 197, 173, 194, 221, 124, 137, 211, 110, 136, 227, 71, 64, 182, 110, 61, 121, 74, 61, 179, 105, 93, 190, 57, 14, 87, 126, 133, 201, 114, 134, 224, 81, 36, 96, 64, 25, 93, 95, 98, 213, 59, 16, 85, 120, 134, 201, 157, 199, 238, 91, 110, 216, 81, 35, 98, 57, 17, 99, 96, 104, 218, 143, 164, 222, 114, 118, 185, 66, 38, 134]
     """
 
-    assert msg.encoding == "8UC3" or msg.encoding == "8UC1", "Expecting the msg to have encoding as 8UC3 or 8UC1, received"+ str( msg.encoding )
-    if msg.encoding == "8UC3":
+    assert msg.encoding == "8UC3" or msg.encoding == "8UC1" or msg.encoding == "bgr8" or msg.encoding == "mono8", \
+        "Expecting the msg to have encoding as 8UC3 or 8UC1, received"+ str( msg.encoding )
+    if msg.encoding == "8UC3" or msg.encoding=='bgr8':
         X = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, -1)
         return X
 
-    if msg.encoding == "8UC1":
+    if msg.encoding == "8UC1" or msg.encoding=='mono8':
         X = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width)
         return X
 
@@ -189,7 +190,7 @@ class HDF5ModelImageDescriptor:
         assert os.path.isfile( kerasmodel_file ), 'The model weights file doesnot exists or there is a permission issue.'+"kerasmodel_file="+kerasmodel_file
         model_fname = kerasmodel_file
         print( tcol.OKGREEN, 'Load model: ', model_fname, tcol.ENDC )
-        model = tf.keras.models.load_model(  model_fname, custom_objects={'NetVLADLayer': NetVLADLayer} )
+        model = tf.keras.models.load_model(  model_fname, custom_objects={'NetVLADLayer': NetVLADLayer}, compile=False )
         old_input_shape = model._layers[0].input_shape
         print( 'OLD MODEL: ', 'input_shape=', str(old_input_shape) )
         model.summary()
@@ -204,6 +205,7 @@ class HDF5ModelImageDescriptor:
 
 
         # Doing this is a hack to force keras to allocate GPU memory. Don't comment this,
+        print ('Allocating GPU Memory...')
         tmp_zer = np.zeros( (1,self.im_rows,self.im_cols,self.im_chnls), dtype='float32' )
         tmp_zer_out = self.model.predict( tmp_zer )
         print( 'model input.shape=', tmp_zer.shape, '\toutput.shape=', tmp_zer_out.shape )
@@ -218,6 +220,7 @@ class HDF5ModelImageDescriptor:
         print( '-----' )
 
         print ( 'tmp_zer_out=', tmp_zer_out )
+        self.n_request_processed = 0
 
 
     def handle_req1( self, req ):
@@ -251,13 +254,13 @@ class HDF5ModelImageDescriptor:
         """ The received image from CV bridge has to be [0,255]. In function makes it to
         intensity range [-1 to 1]
         """
-
+        start_time_handle = time.time()
         # import code
         # code.interact( local=locals() )
         ## Get Image out of req
         # cv_image = CvBridge().imgmsg_to_cv2( req.ima )
         cv_image = imgmsg_to_cv2( req.ima )
-        print( '[HDF5ModelImageDescriptor Handle Request] cv_image.shape', cv_image.shape, '\ta=', req.a, '\tt=', req.ima.header.stamp )
+        print( '[HDF5ModelImageDescriptor Handle Request#%5d] cv_image.shape' %(self.n_request_processed), cv_image.shape, '\ta=', req.a, '\tt=', req.ima.header.stamp )
         if len(cv_image.shape)==2:
             # print 'Input dimensions are NxM but I am expecting it to be NxMxC, so np.expand_dims'
             cv_image = np.expand_dims( cv_image, -1 )
@@ -305,6 +308,7 @@ class HDF5ModelImageDescriptor:
         # result.desc = [ cv_image.shape[0], cv_image.shape[1] ]
         result.desc = u[0,:]
         result.model_type = self.model_type
+        print( '[HDF5ModelImageDescriptor Handle Request] Callback returned in %4.4fms' %( 1000. *(time.time() - start_time_handle) ) )
         return result
 
 if __name__ == '__main__':
