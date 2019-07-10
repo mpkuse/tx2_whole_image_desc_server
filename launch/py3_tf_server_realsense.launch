@@ -5,7 +5,7 @@
 <group if="0" >
     <node name="my_desc_server" pkg="tx2_whole_image_desc_server" type="py3_whole_image_desc_server.py" output="screen">
         <param name="kerasmodel_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x3__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.800.480x640x3.h5" />
-
+        <param name="kerasmodel_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x1__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.2000.480x640x1.h5" />
 
        <!-- <param name="config_file" type="string" value="$(arg config_path)" /> -->
        <!--         OR -->
@@ -15,8 +15,8 @@
 
 
         <!-- this is needed irrespective of the config_file or the nrows and ncols set manually here. -->
-       <!-- <param name="nchnls" type="string" value="1" /> -->
-       <param name="nchnls" type="string" value="3" />
+       <param name="nchnls" type="string" value="1" />
+       <!-- <param name="nchnls" type="string" value="3" /> -->
   </node>
 </group>
 
@@ -24,7 +24,8 @@
 <!-- Loadf from protobuf -->
 <group if="1" >
     <node name="my_desc_server" pkg="tx2_whole_image_desc_server" type="py3_whole_image_desc_server_pb.py" output="screen">
-        <param name="frozen_protobuf_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x3__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.800.480x640x3.pb" />
+        <!-- <param name="frozen_protobuf_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x3__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.800.480x640x3.pb" /> -->
+        <param name="frozen_protobuf_file" type="string" value="$(find tx2_whole_image_desc_server)/tx2_py3_tfserver/models.keras/June2019/centeredinput-m1to1-240x320x1__mobilenetv2-block_9_add__K16__allpairloss/modelarch_and_weights.2000.480x640x1.pb" />
 
 
        <!-- <param name="config_file" type="string" value="$(arg config_path)" /> -->
@@ -35,8 +36,8 @@
 
 
         <!-- this is needed irrespective of the config_file or the nrows and ncols set manually here. -->
-       <!-- <param name="nchnls" type="string" value="1" /> -->
-       <param name="nchnls" type="string" value="3" />
+       <param name="nchnls" type="string" value="1" />
+       <!-- <param name="nchnls" type="string" value="3" /> -->
   </node>
 </group>
 
